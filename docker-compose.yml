@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./databasee/postgreSQL.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck: # sinon le service auth peut démarrer avant la BDD
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+
+
+  auth:
+    build: ./BACKEND/auth-service
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres: # sinon auth démarrer avant la BDD >:(
+        condition: service_healthy
+    env_file:
+      - .env
+
+
+volumes:
+  pgdata:
+
+# docker-compose up --build
+# docker-compose down -v
