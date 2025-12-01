@@ -1,32 +1,13 @@
 const { Pool } = require('pg');
 
 
-//   const pool = new Pool({
-//     user: process.env.DB_USER || 'postgres',
-//     host: process.env.DB_HOST || 'localhost',
-//     database: process.env.DB_NAME || 'event_booking',
-//     password: process.env.DB_PASSWORD || 'postgrestest',
-//     port: process.env.DB_PORT || 5432
-//   });
-
-  // const pool = new Pool({
-  //   user: process.env.DB_USER,
-  //   host: 'postgres',
-  //   database: process.env.DB_NAME,
-  //   password: process.env.DB_PASSWORD,
-  //   port: process.env.DB_PORT,
-  // });
-
   const pool = new Pool({
   connectionString: process.env.DB_URL
 });
 
-
   pool.connect()
   .then(() => console.log('Connecté à PostgreSQL avec succès'))
   .catch(err => console.error('Erreur de connexion à PostgreSQL', err));
-
-
 
   async function addUser(name, email, hashedPassword, role, profileData) {
     const result = await pool.query(
@@ -67,8 +48,6 @@ const { Pool } = require('pg');
       throw err; 
     }
   }
-
-
 
 
 

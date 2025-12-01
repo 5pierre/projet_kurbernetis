@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (email, role, password, profileData, name) VALUES (
   'admin@admin.com',
   'admin',
-  '$2a$10$RiQ71LO7cMy1GZ5dyu3rHegSExjGDL5Dp2i4lKkhNS2jM4FSsEG3W', -- "1234" hashé
+  '$2b$10$wHJHo30.3oOZvpPSuZMKY.SkEfW8o7kx4qNoGTUsXSL8eRfc.AlIG', -- "1234" hashé
   'User Profile Data',
   'Admin User'
 );
