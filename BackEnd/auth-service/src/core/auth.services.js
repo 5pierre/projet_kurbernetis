@@ -11,7 +11,6 @@ async function registerUser(req, res) {
   try {
     const { name, email, password, profileData } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
     if (!email || !password || !name) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -25,9 +24,17 @@ async function registerUser(req, res) {
       return res.status(400).json({ error: "Password must be at least 12 characters long" });
     }
 
-    if (!passwordRegex.test(password)) {
-      return res.status(400).json({ 
-        error: "Password must contain at least one uppercase, one lowercase, one number, and one special character." 
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+    const typesCount = [hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar]
+      .filter(Boolean).length;
+
+    if (typesCount < 3) {
+      return res.status(400).json({
+        error: "Password must contain one lowercase or number or special character."
       });
     }
 
@@ -63,22 +70,12 @@ async function registerUser(req, res) {
 async function loginUser(req, res) { 
   try {
     const { email, password } = req.body;
-    const now = Date.now();
+//brute force protection(si un email est essayé plus de 5 fois en 10 minutes, bloquer pendant 15 minutes)
+
+
     const user = await findUserByEmail(email);
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
-    // if (loginAttempts.has(email)) {
-    //         const attemptData = loginAttempts.get(email);
-            
-    //         if (attemptData.blockExpires && attemptData.blockExpires > now) {
-    //             const timeLeft = Math.ceil((attemptData.blockExpires - now) / 1000 / 60);
-    //             fs.appendFileSync('../../Log.txt', `${new Date().toISOString()} Brute Force Blocked: ${email}\n`);
-    //             return res.status(429).json({ error: `Too many attempts. Try again in ${timeLeft} minutes.` });
-    //         }
-    //         if (attemptData.blockExpires && attemptData.blockExpires <= now) {
-    //             loginAttempts.delete(email);
-    //         }
-    //     }
 
     const valid = await bcrypt.compare(password, user.password);
     console.log("Is Valid?", valid);
