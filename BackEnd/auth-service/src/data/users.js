@@ -49,6 +49,24 @@ const fs = require('fs');
     }
   }
 
+async function deleteUserById(id) {
+  try {
+    const result = await pool.query(`DELETE FROM users WHERE id_user = $1 RETURNING *`, [id]);
+    return result.rows[0] || null;
+  } catch (err) {
+    fs.appendFileSync('../../Log.txt', new Date().toISOString() + 'Erreur lors de la suppression par ID:', err + '\n');
+    throw err; 
+  }
+}
 
+async function getAllUsers() {
+  try {
+    const result = await pool.query(`SELECT * FROM users`);
+    return result.rows;
+  } catch (err) {
+    fs.appendFileSync('../../Log.txt', new Date().toISOString() + 'Erreur lors de la récupération de tous les utilisateurs:', err + '\n');
+    throw err; 
+  }
+}
 
-module.exports = {  addUser, findUserByEmail, findUserById, findIDbyemail };
+module.exports = {  addUser, findUserByEmail, findUserById, findIDbyemail, getAllUsers, deleteUserById};

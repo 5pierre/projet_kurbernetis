@@ -3,10 +3,9 @@ const cors = require('cors');
 const authRoutes = require('./src/api/auth.routes');
 
 const app = express();
-// app.use(cors()); // a enlever en prod ?
 
-app.use(cors({ // CHANGE IN PROD a rendre dynamique
-    // origin: 'http://localhost:3000',  
+app.use(cors({ 
+    // origin: 'http://localhost:3000',  CHANGE IN PROD a rendre dynamique
     origin: '*', // pour postman tests
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],

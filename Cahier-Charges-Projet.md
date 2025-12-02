@@ -130,7 +130,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
   - Text : "J'accepte que mes données soient utilisées pour [usage précis]"
   - Impossible soumettre sans cocher
 
-- [ ] **Page Mentions Légales** (Transparence)
+- [✅] **Page Mentions Légales** (Transparence)
   - Lien visible dans le footer de toutes les pages
   - Contenu : Qui gère le site, quelles données, à quoi elles servent, droits utilisateurs
   - Peut être minimaliste pour un projet école
