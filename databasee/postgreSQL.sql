@@ -7,6 +7,16 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(30) NOT NULL                             
 );
 
+CREATE TABLE IF NOT EXISTS stories (
+    id_story SERIAL PRIMARY KEY,
+    content VARCHAR(5000) NOT NULL, 
+    id_user INT NOT NULL, 
+
+    CONSTRAINT fk_user
+        FOREIGN KEY (id_user)
+        REFERENCES users (id_user) 
+);
+
 -- admin default
 INSERT INTO users (email, role, password, profileData, name) VALUES (
   'admin@admin.com',
@@ -15,7 +25,6 @@ INSERT INTO users (email, role, password, profileData, name) VALUES (
   'User Profile Data',
   'Admin User'
 );
-
 
 -- admin professor ;)
 INSERT INTO users (email, role, password, profileData, name) VALUES (
