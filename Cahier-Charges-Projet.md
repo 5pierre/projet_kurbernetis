@@ -25,19 +25,19 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Fonctionnalités requises :**
 
-- [ ] **Page d'inscription (`/register`)**
+- [✅] **Page d'inscription (`/register`)**
   - Champs : Email, Mot de passe, Nom
   - Validation :
     - Email : Format valide (regex ou libraire)
     - Mot de passe : Minimum 12 caractères + 3 types (majuscules, minuscules, chiffres, spéciaux)
   - Message d'erreur explicite si validation échoue
 
-- [ ] **Page de connexion (`/login`)**
+- [✅] **Page de connexion (`/login`)**
   - Email + Mot de passe
   - Validation d'identité côté serveur
   - Message d'erreur générique en cas d'échec (pas "email pas trouvé" ou "mot de passe incorrect")
 
-- [ ] **Stockage sécurisé des mots de passe**
+- [✅] **Stockage sécurisé des mots de passe**
   - Hachage avec `bcrypt`, `Argon2` ou `PBKDF2`
   - **Interdiction absolue** : MD5, SHA1, SHA256 simple, ou texte clair
   - Vérifiable : Query `SELECT password FROM users LIMIT 1` montre un hash
@@ -47,7 +47,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
   - Cookies avec attributs `HttpOnly`, `Secure`, `SameSite=Strict`
   - Timeout après 15-30 min d'inactivité
 
-- [ ] **Page de déconnexion (`/logout`)**
+- [👍] **Page de déconnexion (`/logout`)**
   - Détruit vraiment la session côté serveur
   - Redirection vers login
 
@@ -63,19 +63,19 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Fonctionnalités requises :**
 
-- [ ] **Au minimum 2 rôles différents** dans le système
+- [✅] **Au minimum 2 rôles différents** dans le système
   - Exemple 1 : `USER` et `ADMIN`
   - Exemple 2 : `AUTHOR`, `EDITOR`, `VIEWER`
   - Exemple 3 : `MANAGER`, `EMPLOYEE`
 
-- [ ] **Stockage du rôle en base de données**
+- [✅] **Stockage du rôle en base de données**
   - Colonne `role` ou `roles` dans la table `users`
 
 - [ ] **Au moins une page/fonctionnalité Admin-only**
   - `/admin/dashboard` visible SEULEMENT pour Admin
   - Ou : `/admin/users` pour gérer les utilisateurs
 
-- [ ] **Vérification côté serveur** (pas juste front-end)
+- [] **Vérification côté serveur** (pas juste front-end)
   - Tentative accès `/admin` en tant qu'User → **Rejet (403 ou Redirect)**
   - Code serveur vérifie `if (user.role !== 'ADMIN') { deny(); }`
 
@@ -95,7 +95,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Fonctionnalités requises :**
 
-- [ ] **Toutes les requêtes SQL utilisent des requêtes préparées**
+- [✅ ] **Toutes les requêtes SQL utilisent des requêtes préparées**
   - OK :  `SELECT * FROM users WHERE id = ?` (paramètre séparé)
   - NO : `SELECT * FROM users WHERE id = $userId` (concaténation)
   - Ou : Utiliser un ORM (Doctrine, Eloquent, Mongoose, SQLAlchemy)
@@ -135,7 +135,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
   - Contenu : Qui gère le site, quelles données, à quoi elles servent, droits utilisateurs
   - Peut être minimaliste pour un projet école
 
-- [ ] **Fichier `.env.example`** documentant les variables d'environnement
+- [✅] **Fichier `.env.example`** documentant les variables d'environnement
   - Utilisateurs et développeurs savent ce qui est requis
 
 **Preuves requises pour validation :**
@@ -213,7 +213,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 - [ ] **Fichier `.env`** en `.gitignore` (jamais push de secrets)
   - Variables : `DB_PASSWORD`, `API_KEY`, `JWT_SECRET`, etc.
 
-- [ ] **Fichier `.env.example`** dans le repo
+- [✅] **Fichier `.env.example`** dans le repo
   - Montre les variables requises SANS les valeurs
 
 - [ ] **Aucun secret en clair dans le code source**

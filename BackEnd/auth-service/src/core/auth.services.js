@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { addUser, findUserByEmail } = require('../data/users'); // <-- remplacer createUser par addUser si besoin
+const { addUser, findUserByEmail } = require('../data/users'); 
 const fs = require('fs');
 const Key = process.env.JWT_SECRET;
 
@@ -39,7 +39,7 @@ async function registerUser(req, res) {
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
     fs.appendFileSync('../../Log.txt', new Date().toISOString() + " User already exists, aborting registration\n");
-    return res.status(400).json({ error: "User already exists" });
+    return res.status(400).json({ error: "invalid credentials" });
     }
 
     fs.appendFileSync('../../Log.txt', new Date().toISOString() + " User does not exist, proceeding with registration\n");
@@ -80,17 +80,13 @@ async function loginUser(req, res) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    //ajouter limitation tentative de connexion brut force
     //ajouter cookie Cookies avec attributs `HttpOnly`, `Secure`, `SameSite=Strict`- Timeout après 15-30 min d'inactivité
+    //token stocké dans le cookie ? 
 
     const user = await findUserByEmail(email);
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
-
     const valid = await bcrypt.compare(password, user.password);
-    console.log("Is Valid?", valid);
-    console.log("test pwd: "+password+ " "+ user.password)
-
 
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
     const token = jwt.sign({ id: user.id_user, role: user.role, email: user.email }, Key, { expiresIn: '1h' });
@@ -105,7 +101,8 @@ async function loginUser(req, res) {
     });  
     
   } catch (err) {
-    res.status(500).json({ error: 'Internal error '+ err }); 
+    res.status(500).json({ error: 'Internal error '}); 
+    fs.appendFileSync('../../Log.txt', new Date().toISOString() + " Error during login: "+ err + "\n");
   }
 
 };

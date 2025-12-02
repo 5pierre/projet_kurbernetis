@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-
+const fs = require('fs');
 
   const pool = new Pool({
   connectionString: process.env.DB_URL
@@ -24,7 +24,7 @@ const { Pool } = require('pg');
       const result = await pool.query(`SELECT id_user FROM users WHERE email = $1`, [email]);
       return result.rows[0]?.id_user; // Retourne directement l'ID ou undefined
     } catch (err) {
-      console.error('Error finding user ID:', err);
+      fs.appendFileSync('../../Log.txt', new Date().toISOString() + 'Error finding user ID: ' + err + '\n');
       throw err; 
     }
   }
@@ -34,7 +34,7 @@ const { Pool } = require('pg');
       const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
       return result.rows[0] || null;;
     } catch (err) {
-      console.error('Erreur lors de la recherche par email:', err);
+      fs.appendFileSync('../../Log.txt', new Date().toISOString() + 'Erreur lors de la recherche par email:', err + '\n');
       throw err; 
     }
   }
@@ -44,7 +44,7 @@ const { Pool } = require('pg');
       const result = await pool.query(`SELECT * FROM users WHERE id_user = $1`, [id]);
       return result.rows[0] || null;;
     } catch (err) {
-      console.error('Erreur lors de la recherche par ID:', err);
+      fs.appendFileSync('../../Log.txt', new Date().toISOString() + 'Erreur lors de la recherche par ID:', err + '\n');
       throw err; 
     }
   }

@@ -14,3 +14,5 @@ INSERT INTO users (email, role, password, profileData, name) VALUES (
   'User Profile Data',
   'Admin User'
 );
+
+
