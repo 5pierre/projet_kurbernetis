@@ -1,18 +1,28 @@
 import axios from 'axios';
 
-const API_URL =  'http://localhost:4000/api/story';
+const API_URL =  'http://localhost:5000/api/story/stories';
 
 export const getStories = async () => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.get(API_URL, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const response = await axios.get(API_URL);
     return response;
   } catch (error) {
     console.error('Error fetching events:', error);
     throw error;
   }
+};
+
+export const postStories = async (story) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(API_URL, story, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+            }
+        });
+        return response;
+    } catch (error) {
+        console.error('Error creating event:', error);
+        throw error;
+    }
 };

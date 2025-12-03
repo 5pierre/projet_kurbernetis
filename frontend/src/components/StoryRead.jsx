@@ -16,11 +16,10 @@ export default function StoryRead() {
   const fetchStories = async () => {
     try {
       setError(null);
-
       const response = await getStories(); 
       
-      if (response && response.data) {
-        setStories(response.data); 
+      if (response && response.data && response.data.stories) {
+        setStories(response.data.stories); 
       } else {
         setStories([]);
       }
@@ -52,7 +51,6 @@ export default function StoryRead() {
   };
 
   const addStory = (newStory) => {
-    if (!newStory.trim()) return; 
     setStories([newStory, ...stories]);
   };
 

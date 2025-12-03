@@ -1,35 +1,41 @@
 import React, { useState } from "react";
+import { postStories } from "../services/storyService";
 
 function StoryWrite({ onSave }) {
   const [form, setForm] = useState({
     textarea: '',
   });
 
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.textarea.trim()) return; 
-    onSave(form.textarea);
-    setForm({ textarea: "" });
+    if (!form.textarea.trim()) return;
+    
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await postStories({ content: form.textarea });
+      
+      if (response && response.data && response.data.story) {
+        onSave(response.data.story);
+      }
+      
+      setForm({ textarea: "" });
+    } catch (err) {
+      console.error('Erreur lors de la création de l\'histoire:', err);
+      setError(err.response?.data?.error || 'Erreur lors de la création de l\'histoire');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // const sanitizeInput = (input) => {
-  //   return input
-  //     .replace(/&/g, '&amp;')
-  //     .replace(/</g, '&lt;')
-  //     .replace(/>/g, '&gt;')
-  //     .replace(/"/g, '&quot;')
-  //     .replace(/'/g, '&#x27;')
-  //     .replace(/\//g, '&#x2F;');
-  // };
-
-  // const handleChange = (e) => {
-  //   const sanitized = sanitizeInput(e.target.value); 
-  //   setForm({ ...form, [e.target.name]: sanitized });
-  // };
 
   return (
     <form onSubmit={handleSubmit}>
