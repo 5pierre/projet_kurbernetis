@@ -1,5 +1,5 @@
 const { getStories, createStory } = require('../data/story');
-const fs = require('fs');
+const fs = require('node:fs');
 const jwt = require('jsonwebtoken');
 const Key = process.env.JWT_SECRET;
 
