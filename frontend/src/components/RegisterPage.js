@@ -85,12 +85,11 @@ const RegisterPage = () => {
         localStorage.setItem('userName', user.name);
         localStorage.setItem('userRole', user.role);
 
-        navigate('/admin');
-        // if (user.role === 'admin') {
-        //   navigate('/admin');
-        // } else {
-        //   navigate('/');
-        // }
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       }
     } catch (err) {
       const errorMessage = isLoginMode 

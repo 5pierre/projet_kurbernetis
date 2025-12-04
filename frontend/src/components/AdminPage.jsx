@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
 import '../styles/RegisterStyle.css';
+import { useNavigate } from 'react-router-dom';
 // 👈 AJOUTER l'importation de deleteUser du service (à créer si non existant, mais je suppose qu'il existe)
 // NOTE: L'importation de deleteUser n'est pas nécessaire si vous utilisez fetch directement comme dans fetchUsers
 // Cependant, si vous utilisez un fichier de service comme usersService.js que vous avez fourni, importez-le :
@@ -10,6 +11,8 @@ export default function AdminPage() {
     const [users, setUsers] = useState([]); // Stocke la liste des utilisateurs
     const [loading, setLoading] = useState(true); // Gère le chargement
     const [error, setError] = useState(null); // Gère les erreurs
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+      const navigate = useNavigate();
     // 👈 NOUVEAU: Pour gérer les messages de succès ou d'erreur après la suppression
     const [message, setMessage] = useState(null); 
 
@@ -72,13 +75,40 @@ export default function AdminPage() {
         }
     };
 
-    // Exécute la fonction au chargement du composant
-    useEffect(() => {
-        fetchUsers();
-    }, []); // [] = s'exécute une seule fois au montage
+
+    const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+    setIsAuthenticated(false);
+    navigate('/register');
+  };
+
+  const handleAuthClick = () => {
+    if (isAuthenticated) {
+      handleLogout();
+    } else {
+      navigate('/register');
+    }
+  };
+
+useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    setIsAuthenticated(!!userId);
+
+    fetchUsers();
+}, []);
+
 
     return (
         <div className="container-login100">
+            <button
+            onClick={handleAuthClick}
+            className="login100-form-btn-logout"
+            style={{ textAlign: 'center' }}
+            >
+            {isAuthenticated ? 'Se déconnecter' : 'Inscription'}
+            </button>
             <div className="wrap-login100" style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <h1>Page Admin</h1>
                 <p>Bienvenue sur la page d'administration.</p>
