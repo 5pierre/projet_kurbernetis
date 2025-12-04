@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
 import '../styles/RegisterStyle.css';
 import { useNavigate } from 'react-router-dom';
+import UserProfile from "./UserProfile";
 // 👈 AJOUTER l'importation de deleteUser du service (à créer si non existant, mais je suppose qu'il existe)
 // NOTE: L'importation de deleteUser n'est pas nécessaire si vous utilisez fetch directement comme dans fetchUsers
 // Cependant, si vous utilisez un fichier de service comme usersService.js que vous avez fourni, importez-le :
@@ -12,7 +13,8 @@ export default function AdminPage() {
     const [loading, setLoading] = useState(true); // Gère le chargement
     const [error, setError] = useState(null); // Gère les erreurs
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-      const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [showProfile, setShowProfile] = useState(false);
     // 👈 NOUVEAU: Pour gérer les messages de succès ou d'erreur après la suppression
     const [message, setMessage] = useState(null); 
 
@@ -107,8 +109,20 @@ useEffect(() => {
             className="login100-form-btn-logout"
             style={{ textAlign: 'center' }}
             >
-            {isAuthenticated ? 'Se déconnecter' : 'Inscription'}
+                {isAuthenticated ? 'Se déconnecter' : 'Inscription'}
             </button>
+            {isAuthenticated && (
+                <button
+                    onClick={() => setShowProfile(true)} // 👈 L'appel est correct
+                    className="login100-form-btn-logout"
+                    style={{ textAlign: 'center', right: '150px' }} 
+                >
+                    Voir Mon Profil
+                </button>
+            )}
+            {/* ... */}
+            {showProfile && <UserProfile onClose={() => setShowProfile(false)} />} 
+            {/* ... */}
             <div className="wrap-login100" style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <h1>Page Admin</h1>
                 <p>Bienvenue sur la page d'administration.</p>
@@ -142,9 +156,9 @@ useEffect(() => {
                             </thead>
                             <tbody>
                                 {users.map((user) => (
-                                    <tr key={user.id}>
+                                    <tr key={user.id_user}>
                                         <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-                                            {user.id}
+                                            {user.id_user}
                                         </td>
                                         <td style={{ padding: '10px', border: '1px solid #ddd' }}>
                                             {user.name}
@@ -160,7 +174,7 @@ useEffect(() => {
                                             {/* Ne pas permettre de supprimer un administrateur ou soi-même (vérification côté back-end) */}
                                             {user.role !== 'admin' ? (
                                                 <button 
-                                                    onClick={() => handleDelete(user.id, user.name)}
+                                                    onClick={() => handleDelete(user.id_user, user.name)}
                                                     style={{ 
                                                         backgroundColor: 'red', 
                                                         color: 'white', 

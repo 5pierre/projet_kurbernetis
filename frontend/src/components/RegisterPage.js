@@ -81,7 +81,7 @@ const RegisterPage = () => {
       
       if (res.data && res.data.user) {
         const { user } = res.data;
-        localStorage.setItem('userId', user.id_user);
+        localStorage.setItem('userId', user.id);
         localStorage.setItem('userName', user.name);
         localStorage.setItem('userRole', user.role);
 

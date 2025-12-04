@@ -5,6 +5,7 @@ import StoryWrite from "./StoryWrite";
 import '../styles/RegisterStyle.css';
 import Footer from './Footer';
 import { getStories } from '../services/storyService';
+import UserProfile from './UserProfile';
 
 
 export default function StoryRead() {
@@ -12,6 +13,7 @@ export default function StoryRead() {
   const navigate = useNavigate();
   const [stories, setStories] = useState([]);
   const [error, setError] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   const fetchStories = async () => {
     try {
@@ -64,7 +66,19 @@ export default function StoryRead() {
             style={{ textAlign: 'center' }}
             >
             {isAuthenticated ? 'Se déconnecter' : 'Inscription'}
+        </button>
+        {isAuthenticated && (
+            <button
+                onClick={() => setShowProfile(true)} // 👈 L'appel est correct
+                className="login100-form-btn-logout"
+                style={{ textAlign: 'center', right: '150px' }} 
+            >
+                Voir Mon Profil
             </button>
+        )}
+        {/* ... */}
+        {showProfile && <UserProfile onClose={() => setShowProfile(false)} />}
+        {/* ... */}
       <div className="wrap-login100" style={{ flexDirection: 'column', alignItems: 'center' }}>
         <h1>Bienvenue sur Discute Potins 🎉</h1>
         <h2>Histoires</h2>
