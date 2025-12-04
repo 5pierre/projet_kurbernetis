@@ -62,12 +62,12 @@ async function registerUser(req, res) {
     fs.appendFileSync('../../Log.txt', new Date().toISOString() + " User does not exist, proceeding with registration\n");
 
     const hashed = await bcrypt.hash(password, 10);
-    const adduser = await addUser(name, email, hashed, "admin", profileData);
+    const adduser = await addUser(name, email, hashed, "user", profileData);
 
     const token = jwt.sign({ 
       id: adduser.id, 
       name: name, 
-      role: "admin", 
+      role: "user", 
       email: email 
     }, Key, { expiresIn: '15m' }); 
 
