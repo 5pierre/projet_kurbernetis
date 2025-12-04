@@ -34,13 +34,18 @@ async function getAllStories(req, res) {
 
 // CREATE STORY
 async function createNewStory(req, res) {
+
+  console.log("create story");
+  console.log(req);
+  console.log("Request cookies:", req.cookies);
+  console.log("Request params:", req.cookies.token);
+
 const token = req.headers.authorization;
 if (!token) return res.status(403).send("Access denied");
   try {
     const { content } = req.body;
     console.log("Received story content:", content);
     console.log(": ", req);
-    // const id_user = req.user.id_user;
     const decodedToken = verifyToken(token);
 
       if (!content || typeof content !== 'string' || content.trim().length === 0) {
