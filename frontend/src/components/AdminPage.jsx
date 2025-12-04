@@ -3,9 +3,7 @@ import Footer from './Footer';
 import '../styles/RegisterStyle.css';
 import { useNavigate } from 'react-router-dom';
 import UserProfile from "./UserProfile";
-// 👈 AJOUTER l'importation de deleteUser du service (à créer si non existant, mais je suppose qu'il existe)
-// NOTE: L'importation de deleteUser n'est pas nécessaire si vous utilisez fetch directement comme dans fetchUsers
-// Cependant, si vous utilisez un fichier de service comme usersService.js que vous avez fourni, importez-le :
+
 import { deleteUser } from '../services/usersService'; // Assurez-vous que le chemin est correct
 
 export default function AdminPage() {

@@ -20,6 +20,12 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "overrides": {
+    "nth-check": "^2.1.1",
+    "postcss": "^8.4.31",
+    "svgo": "^3.0.2",
+    "resolve-url-loader": "^5.0.0"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
