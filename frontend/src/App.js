@@ -23,7 +23,9 @@ const App = () => {
         <Route path="/" element={<StoryRead />} />
         <Route path="/mentionsLegales" element={<MentionsLegales />}/>
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+        {/* <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} /> */}
+        <Route path="/admin" element={<AdminPage />} />
+
       </Routes>
     </Router>
   );

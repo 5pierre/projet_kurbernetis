@@ -26,6 +26,7 @@ export const getUser = async (id) => {
   }
 };
 
+
 export const deleteUser = async (id) => {
   try {
     const response = await axios.delete(`${API_URL}/${id}`, {

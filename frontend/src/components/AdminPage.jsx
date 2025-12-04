@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
 import '../styles/RegisterStyle.css';
+// 👈 AJOUTER l'importation de deleteUser du service (à créer si non existant, mais je suppose qu'il existe)
+// NOTE: L'importation de deleteUser n'est pas nécessaire si vous utilisez fetch directement comme dans fetchUsers
+// Cependant, si vous utilisez un fichier de service comme usersService.js que vous avez fourni, importez-le :
+import { deleteUser } from '../services/usersService'; // Assurez-vous que le chemin est correct
 
 export default function AdminPage() {
     const [users, setUsers] = useState([]); // Stocke la liste des utilisateurs
     const [loading, setLoading] = useState(true); // Gère le chargement
     const [error, setError] = useState(null); // Gère les erreurs
+    // 👈 NOUVEAU: Pour gérer les messages de succès ou d'erreur après la suppression
+    const [message, setMessage] = useState(null); 
 
     // Fonction pour récupérer les utilisateurs
     const fetchUsers = async () => {
+        // ... (votre code existant pour fetchUsers) ...
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:5000/api/users', {
+            const response = await fetch('http://localhost:4000/api/auth/admin/allusers', { // 👈 ATTENTION: J'ai corrigé le port et la route
                 method: 'GET',
                 credentials: 'include', 
                 headers: {
@@ -20,7 +27,9 @@ export default function AdminPage() {
             });
 
             if (!response.ok) {
-                throw new Error('Erreur lors de la récupération des utilisateurs');
+                // Tente de lire le corps de la réponse pour une erreur plus détaillée
+                const errorText = await response.text();
+                throw new Error(`Erreur lors de la récupération des utilisateurs: ${response.status} - ${errorText}`);
             }
 
             const data = await response.json();
@@ -34,6 +43,35 @@ export default function AdminPage() {
         }
     };
 
+    // 👈 NOUVEAU: Fonction pour supprimer un utilisateur
+    const handleDelete = async (userId, userName) => {
+        if (!window.confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur: ${userName} (ID: ${userId})?`)) {
+            return;
+        }
+
+        setMessage(null); // Réinitialiser les messages
+        try {
+            // Utilisation de la fonction deleteUser du service (si elle existe, sinon utilisez fetch)
+            // L'URL de l'API de suppression dans auth.routes.js est `/admin/deleteuser/:id`
+            const response = await fetch(`http://localhost:4000/api/auth/admin/deleteuser/${userId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                 const errorText = await response.text();
+                 throw new Error(`Échec de la suppression: ${errorText}`);
+            }
+            
+            setMessage(`Utilisateur ${userName} (ID: ${userId}) supprimé avec succès.`);
+            // Mettre à jour la liste des utilisateurs après la suppression
+            fetchUsers(); 
+        } catch (err) {
+            setMessage(`Erreur lors de la suppression: ${err.message}`);
+            console.error('Erreur de suppression:', err);
+        }
+    };
+
     // Exécute la fonction au chargement du composant
     useEffect(() => {
         fetchUsers();
@@ -44,6 +82,13 @@ export default function AdminPage() {
             <div className="wrap-login100" style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <h1>Page Admin</h1>
                 <p>Bienvenue sur la page d'administration.</p>
+
+                {/* Affichage des messages de statut */}
+                {message && (
+                    <p style={{ color: message.startsWith('Erreur') ? 'red' : 'green', fontWeight: 'bold' }}>
+                        {message}
+                    </p>
+                )}
 
                 {/* Affichage pendant le chargement */}
                 {loading && <p>Chargement des utilisateurs...</p>}
@@ -62,6 +107,7 @@ export default function AdminPage() {
                                     <th style={{ padding: '10px', border: '1px solid #ddd' }}>Nom</th>
                                     <th style={{ padding: '10px', border: '1px solid #ddd' }}>Email</th>
                                     <th style={{ padding: '10px', border: '1px solid #ddd' }}>Rôle</th>
+                                    <th style={{ padding: '10px', border: '1px solid #ddd' }}>Actions</th> {/* 👈 NOUVEAU */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,6 +124,27 @@ export default function AdminPage() {
                                         </td>
                                         <td style={{ padding: '10px', border: '1px solid #ddd' }}>
                                             {user.role}
+                                        </td>
+                                        {/* 👈 NOUVEAU: Bouton Supprimer */}
+                                        <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
+                                            {/* Ne pas permettre de supprimer un administrateur ou soi-même (vérification côté back-end) */}
+                                            {user.role !== 'admin' ? (
+                                                <button 
+                                                    onClick={() => handleDelete(user.id, user.name)}
+                                                    style={{ 
+                                                        backgroundColor: 'red', 
+                                                        color: 'white', 
+                                                        border: 'none', 
+                                                        padding: '5px 10px', 
+                                                        borderRadius: '5px', 
+                                                        cursor: 'pointer' 
+                                                    }}
+                                                >
+                                                    Supprimer
+                                                </button>
+                                            ) : (
+                                                <span style={{ color: 'gray' }}>Admin</span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
