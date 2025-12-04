@@ -131,6 +131,29 @@ async function loginUser(req, res) {
 
 };
 
+// CREATE INITIAL ADMIN USER IF NOT EXISTS
+
+createInitialAdmin(); // doit etre appelé une seule fois au démarrage du service
+
+async function createInitialAdmin() {
+  try {
+    const adminName = process.env.ADMIN_name;
+    const adminEmail = process.env.ADMIN_email;
+    const adminPassword = process.env.ADMIN_Password;
+    const adminProfileData = process.env.ADMIN_profileData;
+    const existingAdmin = await findUserByEmail(adminEmail);
+    if (existingAdmin) {
+      fs.appendFileSync('../../Log.txt', new Date().toISOString() + " Admin user already exists, skipping creation\n");
+      return;
+    }
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+    await addUser(adminName, adminEmail, hashedPassword, "admin", adminProfileData, adminName);
+    fs.appendFileSync('../../Log.txt', new Date().toISOString() + " Admin user created successfully\n");
+
+  } catch (err) {
+    fs.appendFileSync('../../Log.txt', new Date().toISOString() + " Error creating admin user: " + err + "\n");
+  }
+}
 
 
 module.exports = { loginUser, registerUser };

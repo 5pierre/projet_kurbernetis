@@ -38,7 +38,6 @@ router.post('/logout', (req, res) => {
 
 router.get('/admin/allusers', async (req, res) => {
     const token= req.cookies.token;
-    console.log("Token received:", token); // Log du token reçu
     if (!token) return res.status(403).send("Access denied");
     try {
         const decoded = verifyToken(token);
@@ -59,7 +58,6 @@ router.get('/admin/allusers', async (req, res) => {
 //admin delet user byid 
 router.delete('/admin/deleteuser/:id', async (req, res) => {
     const token= req.cookies.token;
-    console.log("Token received:", token); // Log du token reçu
     if (!token) return res.status(403).send("Access denied");
 
     try {
@@ -91,12 +89,7 @@ router.delete('/admin/deleteuser/:id', async (req, res) => {
 
 // Get User Profile (Protected)
 router.get('/users/:id', async (req, res) => {
-    console.log("Fetching user profile");
-    console.log("Request cookies:", req.cookies);
-    console.log("Request params:", req.cookies.token);
-    console.log(req);
     const token= req.cookies.token;
-    console.log("Token received:", token); // Log du token reçu
     if (!token) return res.status(403).send("Access denied");
 
     try {

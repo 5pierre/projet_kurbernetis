@@ -18,23 +18,7 @@ CREATE TABLE IF NOT EXISTS stories (
         REFERENCES users (id_user) 
 );
 
--- admin default
-INSERT INTO users (email, role, password, profileData, name) VALUES (
-  'admin@admin.com',
-  'admin',
-  '$2b$10$wHJHo30.3oOZvpPSuZMKY.SkEfW8o7kx4qNoGTUsXSL8eRfc.AlIG', -- "1234" hashé
-  'User Profile Data',
-  'Admin User'
-);
 
--- admin professor ;)
-INSERT INTO users (email, role, password, profileData, name) VALUES (
-  'manel.benhamouda@intervenants.efrei.net',
-  'admin',
-  '$2b$10$VfuZ2nSxBbAUG/KxX4IBWOGg8I4vbPttclRTZ0zG1rPVke/BWSVwG', -- "ManelBenhamouda1234!" hashé
-  'la meilleur prof de securite!',
-  'Manel BENHAMOUDA ADMIN'
-);
 
 
 
