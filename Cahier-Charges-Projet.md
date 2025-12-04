@@ -53,10 +53,13 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Preuves requises pour validation :**
 - Capture écran du formulaire d'inscription
+![Alt text](/images-md/formulaire-inscri.png "Formulaire d'inscription")
 - Tentative inscription avec mot de passe faible → Rejet (avec message)
+![Alt text](/images-md/image1.png "Formulaire d'inscription")
 - Capture écran du formulaire de connexion
+![Alt text](/images-md/image2.png "Formulaire de connexion")
 - Capture écran du cookie dans l'inspecteur réseau (HttpOnly, Secure, SameSite visibles)
-
+![Alt text](/images-md/image3.png "Cookie HttpOnly, Secure, SameSite")
 ---
 
 ### Système de Rôles & Contrôle d'Accès

@@ -6,6 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+    "overrides": {
+      "nth-check": "^2.1.1",
+      "postcss": "^8.4.31",
+      "svgo": "^3.0.2",
+      "resolve-url-loader": "^5.0.0"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",

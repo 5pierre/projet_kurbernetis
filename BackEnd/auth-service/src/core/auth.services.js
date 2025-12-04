@@ -132,7 +132,7 @@ async function loginUser(req, res) {
 };
 
 
-await createInitialAdmin(); // doit etre appelé une seule fois au démarrage du service
+createInitialAdmin(); // doit etre appelé une seule fois au démarrage du service
 
 async function createInitialAdmin() {
   try {
