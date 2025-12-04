@@ -5,9 +5,15 @@ const pool = new Pool({
   connectionString: process.env.DB_URL
 });
 
-pool.connect()
-  .then(() => console.log('Connecté à PostgreSQL avec succès'))
-  .catch(err => console.error('Erreur de connexion à PostgreSQL', err));
+(async () => {
+  try {
+    await pool.connect();
+    console.log('Connecté à PostgreSQL avec succès');
+  } catch (err) {
+    console.error('Erreur de connexion à PostgreSQL', err);
+    process.exit(1);
+  }
+})();
 
 async function getStories() {
   try {

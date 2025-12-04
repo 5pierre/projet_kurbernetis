@@ -68,16 +68,14 @@ export default function StoryRead() {
         </button>
         {isAuthenticated && (
             <button
-                onClick={() => setShowProfile(true)} // 👈 L'appel est correct
+                onClick={() => setShowProfile(true)}
                 className="login100-form-btn-logout"
                 style={{ textAlign: 'center', right: '150px' }} 
             >
                 Voir Mon Profil
             </button>
         )}
-        {/* ... */}
         {showProfile && <UserProfile onClose={() => setShowProfile(false)} />}
-        {/* ... */}
       <div className="wrap-login100" style={{ flexDirection: 'column', alignItems: 'center' }}>
         <h1>Bienvenue sur Discute Potins 🎉</h1>
         <h2>Histoires</h2>

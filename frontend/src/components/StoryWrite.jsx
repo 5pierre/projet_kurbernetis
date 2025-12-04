@@ -12,19 +12,15 @@ function StoryWrite({ onSave }) {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    // Réinitialiser les messages quand l'utilisateur tape
     setError(null);
     setSuccess(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Réinitialiser les messages
     setError(null);
     setSuccess(null);
 
-    // 👇 VALIDATIONS AVANT setLoading
     if (!form.textarea.trim()) {
       setError("Veuillez écrire une histoire");
       return;
@@ -40,7 +36,6 @@ function StoryWrite({ onSave }) {
       return;
     }
 
-    // Maintenant on peut charger
     setLoading(true);
 
     try {
@@ -48,10 +43,8 @@ function StoryWrite({ onSave }) {
       
       if (response && response.data && response.data.story) {
         onSave(response.data.story);
-        setSuccess("Histoire publiée avec succès ! 🎉");
-        setForm({ textarea: "" }); // Vider le textarea
-        
-        // Faire disparaître le message après 3 secondes
+        setSuccess("Histoire publiée avec succès !");
+        setForm({ textarea: "" });
         setTimeout(() => setSuccess(null), 3000);
       }
       
@@ -86,7 +79,6 @@ function StoryWrite({ onSave }) {
         }}
       />
       
-      {/* Compteur de caractères */}
       <div style={{ 
         textAlign: 'right', 
         fontSize: '12px', 
@@ -97,7 +89,6 @@ function StoryWrite({ onSave }) {
         {form.textarea.length} / 5000 caractères
       </div>
 
-      {/* Messages d'erreur */}
       {error && (
         <div style={{
           backgroundColor: '#ffebee',
@@ -111,7 +102,6 @@ function StoryWrite({ onSave }) {
         </div>
       )}
 
-      {/* Messages de succès */}
       {success && (
         <div style={{
           backgroundColor: '#e8f5e9',
@@ -121,7 +111,7 @@ function StoryWrite({ onSave }) {
           marginBottom: '10px',
           border: '1px solid #66bb6a'
         }}>
-          ✓ {success}
+           {success}
         </div>
       )}
 

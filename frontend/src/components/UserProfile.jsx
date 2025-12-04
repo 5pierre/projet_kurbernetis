@@ -20,15 +20,11 @@ export default function UserProfile({ onClose }) {
         const fetchProfile = async () => {
             try {
                 setLoading(true);
-                // Utilisation de la fonction existante getUser
                 const response = await getUser(userId); 
-                
-                // EXTRAIRE les données de la réponse axios
                 setProfile(response.data); 
                 setError(null);
             } catch (err) {
                 console.error("Erreur lors de la récupération du profil:", err);
-                // Le backend peut renvoyer 404/401 avec un message
                 const errorMessage = err.response?.data || "Impossible de charger les données du profil. Veuillez vous reconnecter.";
                 setError(errorMessage);
             } finally {
@@ -38,9 +34,6 @@ export default function UserProfile({ onClose }) {
 
         fetchProfile();
     }, [userId]);
-
-    // ... (Reste du code du rendu (JSX) qui reste le même que ma proposition précédente) ...
-    // Le code de rendu (JSX) de la modale est le même que dans la proposition précédente
 
     return (
         <div className="profile-modal-overlay" style={{

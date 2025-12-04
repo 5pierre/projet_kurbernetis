@@ -4,7 +4,7 @@ import axios from 'axios';
 import '../styles/RegisterStyle.css';
 import Footer from './Footer';
 
-const RegisterPage = () => {
+export default function RegisterPage(){
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [form, setForm] = useState({
     name: '',
@@ -66,7 +66,6 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validation côté client
     if (!validateForm()) {
       return;
     }
@@ -253,5 +252,3 @@ const RegisterPage = () => {
     </div>
   );
 };
-
-export default RegisterPage;

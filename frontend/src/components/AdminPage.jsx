@@ -4,9 +4,6 @@ import '../styles/RegisterStyle.css';
 import { useNavigate } from 'react-router-dom';
 import UserProfile from "./UserProfile";
 
-import { deleteUser } from '../services/usersService'; // Assurez-vous que le chemin est correct
-
-
 export default function AdminPage() {
     const [users, setUsers] = useState([]); // Stocke la liste des utilisateurs
     const [loading, setLoading] = useState(true); // Gère le chargement
@@ -53,10 +50,8 @@ export default function AdminPage() {
             return;
         }
 
-        setMessage(null); // Réinitialiser les messages
+        setMessage(null); 
         try {
-            // Utilisation de la fonction deleteUser du service (si elle existe, sinon utilisez fetch)
-            // L'URL de l'API de suppression dans auth.routes.js est `/admin/deleteuser/:id`
             const response = await fetch(`http://localhost:4000/api/auth/admin/deleteuser/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include',
@@ -68,7 +63,6 @@ export default function AdminPage() {
             }
             
             setMessage(`Utilisateur ${userName} (ID: ${userId}) supprimé avec succès.`);
-            // Mettre à jour la liste des utilisateurs après la suppression
             fetchUsers(); 
         } catch (err) {
             setMessage(`Erreur lors de la suppression: ${err.message}`);
@@ -112,34 +106,25 @@ useEffect(() => {
             </button>
             {isAuthenticated && (
                 <button
-                    onClick={() => setShowProfile(true)} // 👈 L'appel est correct
+                    onClick={() => setShowProfile(true)}
                     className="login100-form-btn-logout"
                     style={{ textAlign: 'center', right: '150px' }} 
                 >
                     Voir Mon Profil
                 </button>
             )}
-            {/* ... */}
             {showProfile && <UserProfile onClose={() => setShowProfile(false)} />} 
-            {/* ... */}
             <div className="wrap-login100" style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <h1>Page Admin</h1>
                 <p>Bienvenue sur la page d'administration.</p>
-
-                {/* Affichage des messages de statut */}
                 {message && (
                     <p style={{ color: message.startsWith('Erreur') ? 'red' : 'green', fontWeight: 'bold' }}>
                         {message}
                     </p>
                 )}
 
-                {/* Affichage pendant le chargement */}
                 {loading && <p>Chargement des utilisateurs...</p>}
-
-                {/* Affichage en cas d'erreur */}
                 {error && <p style={{ color: 'red' }}>Erreur: {error}</p>}
-
-                {/* Affichage des utilisateurs */}
                 {!loading && !error && (
                     <div style={{ marginTop: '20px', width: '100%' }}>
                         <h2>Liste des utilisateurs ({users.length})</h2>
@@ -150,7 +135,7 @@ useEffect(() => {
                                     <th style={{ padding: '10px', border: '1px solid #ddd' }}>Nom</th>
                                     <th style={{ padding: '10px', border: '1px solid #ddd' }}>Email</th>
                                     <th style={{ padding: '10px', border: '1px solid #ddd' }}>Rôle</th>
-                                    <th style={{ padding: '10px', border: '1px solid #ddd' }}>Actions</th> {/* 👈 NOUVEAU */}
+                                    <th style={{ padding: '10px', border: '1px solid #ddd' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,9 +153,7 @@ useEffect(() => {
                                         <td style={{ padding: '10px', border: '1px solid #ddd' }}>
                                             {user.role}
                                         </td>
-                                        {/* 👈 NOUVEAU: Bouton Supprimer */}
                                         <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
-                                            {/* Ne pas permettre de supprimer un administrateur ou soi-même (vérification côté back-end) */}
                                             {user.role !== 'admin' ? (
                                                 <button 
                                                     onClick={() => handleDelete(user.id_user, user.name)}
@@ -195,8 +178,6 @@ useEffect(() => {
                         </table>
                     </div>
                 )}
-
-                {/* Si aucun utilisateur */}
                 {!loading && !error && users.length === 0 && (
                     <p>Aucun utilisateur trouvé.</p>
                 )}
