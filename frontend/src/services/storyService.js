@@ -14,13 +14,10 @@ export const getStories = async () => {
 
 export const postStories = async (story) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(API_URL, story, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-            }
-        });
-        return response;
+      const response = await axios.post(API_URL, story, {
+          withCredentials: true 
+      });
+      return response;
     } catch (error) {
         console.error('Error creating event:', error);
         throw error;

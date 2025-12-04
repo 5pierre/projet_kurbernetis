@@ -77,11 +77,10 @@ const RegisterPage = () => {
     const url = `http://localhost:4000/api/auth/${endpoint}`;
 
     try {
-      const res = await axios.post(url, form);
+      const res = await axios.post(url, form, {withCredentials: true});
       
-      if (res.data && res.data.token && res.data.user) {
-        const { token, user } = res.data;
-        localStorage.setItem('token', token);
+      if (res.data && res.data.user) {
+        const { user } = res.data;
         localStorage.setItem('userId', user.id_user);
         localStorage.setItem('userName', user.name);
         localStorage.setItem('userRole', user.role);

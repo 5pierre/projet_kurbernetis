@@ -1,8 +1,23 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { addUser, findUserByEmail } = require('../data/users'); 
-const fs = require('fs');
+const fs = require('node:fs');
 const Key = process.env.JWT_SECRET;
+
+
+const COOKIE_SETTING = {
+  httpOnly: true,       // Protection XSS
+  secure: false,         // Envoi uniquement via HTTPS //process.env.NODE_ENV === 'production', 
+  sameSite: 'Strict',   // Protection CSRF
+  maxAge: 15 * 60 * 1000 // 15 minutes
+};  
+
+// const verifyToken = (token) => {
+//     if (!token) throw new Error("No token provided");
+//     const parts = token.split(" ");
+//     if (parts.length !== 2 || parts[0] !== "Bearer") throw new Error("Bad token format"); 
+//     return jwt.verify(parts[1], Key);
+// };
 
 // REGISTER USER
 async function registerUser(req, res) {
@@ -60,10 +75,12 @@ async function registerUser(req, res) {
       name: name, 
       role: "user", 
       email: email 
-    }, Key, { expiresIn: '10m' }); 
+    }, Key, { expiresIn: '15m' }); 
+
+    res.cookie('token', token, COOKIE_SETTING);
 
     res.status(200).json({
-      token,
+      message: "Registration successful",
       user: { 
         id: adduser.id_user, 
         name: adduser.name,
@@ -71,6 +88,7 @@ async function registerUser(req, res) {
         role: adduser.role
       }
     });
+
     fs.appendFileSync('../../Log.txt', new Date().toISOString() + " User registered successfully\n");
 
   } catch (err) {
@@ -87,28 +105,31 @@ async function loginUser(req, res) {
     if (!email || !password) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
-    
-    //solution requise logout : Créer une route qui envoie un cookie vide expirant immédiatement (res.clearCookie('jwt')).
-    //ajouter cookie Cookies avec attributs `HttpOnly`, `Secure`, `SameSite=Strict`- Timeout après 15-30 min d'inactivité
-    //token stocké dans le cookie ? 
-
     const user = await findUserByEmail(email);
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ id: user.id_user, role: user.role, email: user.email }, Key, { expiresIn: '1h' });
+
+    const token = jwt.sign({ 
+      id: user.id_user, 
+      role: user.role, 
+      email: user.email 
+    }, Key, { expiresIn: '15m' });
+
+    res.cookie('token', token, COOKIE_SETTING);
+    
     res.status(200).json({
-      token,
+      message: "Registration successful",
       user: { 
         id: user.id_user, 
         name: user.name,
         email: user.email,
         role: user.role
       }
-    });  
-    
+    }); 
+    fs.appendFileSync('../../Log.txt', new Date().toISOString() + " User "+ user.email +" logged in successfully\n");
   } catch (err) {
     res.status(500).json({ error: 'Internal error '}); 
     fs.appendFileSync('../../Log.txt', new Date().toISOString() + " Error during login: "+ err + "\n");

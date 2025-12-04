@@ -4,11 +4,8 @@ const API_URL =  'http://localhost:4000/api/auth/users';
 
 export const getUsers = async () => {
   try {
-    const token = localStorage.getItem('token');
     const response = await axios.get(API_URL, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      withCredentials: true
     });
     return response;
   } catch (error) {
@@ -19,11 +16,8 @@ export const getUsers = async () => {
 
 export const getUser = async (id) => {
   try {
-    const token = localStorage.getItem('token');
     const response = await axios.get(`${API_URL}/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      withCredentials: true
     });
     return response;
   } catch (error) {
@@ -34,11 +28,8 @@ export const getUser = async (id) => {
 
 export const deleteUser = async (id) => {
   try {
-    const token = localStorage.getItem('token');
     const response = await axios.delete(`${API_URL}/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      withCredentials: true
     });
     return response;
   } catch (error) {

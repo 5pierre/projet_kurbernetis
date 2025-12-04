@@ -31,13 +31,15 @@ export default function StoryRead() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
+    const userId = localStorage.getItem('userId');
+    setIsAuthenticated(!!userId);
     fetchStories();
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
     setIsAuthenticated(false);
     navigate('/register');
   };

@@ -4,17 +4,17 @@ const authRoutes = require('./src/api/auth.routes');
 
 const app = express();
 
+
 app.use(cors({ 
-    // origin: 'http://localhost:3000',  CHANGE IN PROD a rendre dynamique
-    origin: '*', // pour postman tests
+    // origin: 'http://localhost:3000',  //CHANGE IN PROD a rendre dynamique
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Permet d'envoyer les cookies 
 }));
-
 app.use(express.json());
 
-app.set('trust proxy', 1); 
+app.set('trust proxy', 1); // ?
 
 app.use('/api/auth', authRoutes);
 
