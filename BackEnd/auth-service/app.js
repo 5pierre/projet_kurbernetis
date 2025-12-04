@@ -1,18 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./src/api/auth.routes');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
 
 app.use(cors({ 
-    // origin: 'http://localhost:3000',  //CHANGE IN PROD a rendre dynamique
-    origin: '*',
+    origin: 'http://localhost:3000',  //CHANGE IN PROD a rendre dynamique
+    // origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Permet d'envoyer les cookies 
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('trust proxy', 1); // ?
 
