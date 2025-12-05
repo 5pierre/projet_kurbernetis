@@ -5,21 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import UserProfile from "./UserProfile";
 
 export default function AdminPage() {
-    const [users, setUsers] = useState([]); // Stocke la liste des utilisateurs
-    const [loading, setLoading] = useState(true); // Gère le chargement
-    const [error, setError] = useState(null); // Gère les erreurs
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
     const [showProfile, setShowProfile] = useState(false);
-    // 👈 NOUVEAU: Pour gérer les messages de succès ou d'erreur après la suppression
     const [message, setMessage] = useState(null); 
 
-    // Fonction pour récupérer les utilisateurs
     const fetchUsers = async () => {
-        // ... (votre code existant pour fetchUsers) ...
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:4000/api/auth/admin/allusers', { // 👈 ATTENTION: J'ai corrigé le port et la route
+            const response = await fetch('http://localhost:4000/api/auth/admin/allusers', { 
                 method: 'GET',
                 credentials: 'include', 
                 headers: {
@@ -28,13 +25,12 @@ export default function AdminPage() {
             });
 
             if (!response.ok) {
-                // Tente de lire le corps de la réponse pour une erreur plus détaillée
                 const errorText = await response.text();
                 throw new Error(`vous n'avez pas la permission d'accéder à cette ressource: ${errorText}`);
             }
 
             const data = await response.json();
-            setUsers(data); // Stocke les utilisateurs dans l'état
+            setUsers(data);
             setError(null);
         } catch (err) {
             setError(err.message);
@@ -44,7 +40,6 @@ export default function AdminPage() {
         }
     };
 
-    // 👈 NOUVEAU: Fonction pour supprimer un utilisateur
     const handleDelete = async (userId, userName) => {
         if (!window.confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur: ${userName} (ID: ${userId})?`)) {
             return;
