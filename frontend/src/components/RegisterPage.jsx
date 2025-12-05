@@ -4,6 +4,65 @@ import axios from 'axios';
 import '../styles/RegisterStyle.css';
 import Footer from './Footer';
 
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email) return 'L\'email est requis';
+  if (!emailRegex.test(email)) return 'Format d\'email invalide';
+  return '';
+};
+
+const validatePassword = (password) => {
+  if (!password) return 'Le mot de passe est requis';
+  if (password.length < 12) return 'Le mot de passe doit contenir au moins 12 caractères';
+
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+
+  const typesCount = [hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar].filter(Boolean).length;
+
+  if (typesCount < 3) {
+    return 'Le mot de passe doit contenir au moins 3 types parmi : majuscules, minuscules, chiffres, caractères spéciaux';
+  }
+  return '';
+};
+
+const checkPasswordCriteria = (password) => {
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+
+  const lengthValid = password.length >= 12;
+  
+  const typesValid = (
+    (hasUpperCase && hasLowerCase && (hasNumber || hasSpecialChar)) ||
+    (hasUpperCase && hasNumber && hasSpecialChar) ||
+    (hasLowerCase && hasNumber && hasSpecialChar)
+  );
+
+  return { lengthValid, typesValid };
+};
+
+const handleAuthSuccess = (user, navigate) => {
+  localStorage.setItem('userId', user.id);
+  localStorage.setItem('userName', user.name);
+  localStorage.setItem('userRole', user.role);
+
+  if (user.role === 'admin') {
+    navigate('/admin');
+  } else {
+    navigate('/');
+  }
+};
+
+const getErrorMessage = (isLoginMode, err) => {
+  return isLoginMode 
+    ? 'Identifiants incorrects. Veuillez réessayer.' 
+    : (err.response?.data?.error || 'Erreur lors de l\'inscription. Veuillez réessayer.');
+};
+
 export default function RegisterPage(){
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [form, setForm] = useState({
@@ -19,43 +78,16 @@ export default function RegisterPage(){
 
   const toggleMode = () => setIsLoginMode(!isLoginMode);
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) return 'L\'email est requis';
-    if (!emailRegex.test(email)) return 'Format d\'email invalide';
-    return '';
-  };
-
-  const validatePassword = (password) => {
-    if (!password) return 'Le mot de passe est requis';
-    if (password.length < 12) return 'Le mot de passe doit contenir au moins 12 caractères';
-
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
-
-    const typesCount = [hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar].filter(Boolean).length;
-
-    if (typesCount < 3) {
-      return 'Le mot de passe doit contenir au moins 3 types parmi : majuscules, minuscules, chiffres, caractères spéciaux';
-    }
-    return '';
-  };
-
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-   const validateForm = () => {
+  const validateForm = () => {
     const newErrors = {};
 
-    // Validation email
     const emailError = validateEmail(form.email);
     if (emailError) newErrors.email = emailError;
 
-    // Validation mot de passe
     const passwordError = validatePassword(form.password);
     if (passwordError) newErrors.password = passwordError;
 
@@ -79,29 +111,18 @@ export default function RegisterPage(){
       const res = await axios.post(url, form, {withCredentials: true});
       
       if (res.data && res.data.user) {
-        const { user } = res.data;
-        localStorage.setItem('userId', user.id);
-        localStorage.setItem('userName', user.name);
-        localStorage.setItem('userRole', user.role);
-
-        if (user.role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/');
-        }
+        handleAuthSuccess(res.data.user, navigate);
       }
     } catch (err) {
-      const errorMessage = isLoginMode 
-      ? 'Identifiants incorrects. Veuillez réessayer.' 
-      : (err.response?.data?.error || 'Erreur lors de l\'inscription. Veuillez réessayer.');
-
+      const errorMessage = getErrorMessage(isLoginMode, err);
       alert(`Erreur : ${errorMessage}`);
       console.error('Erreur API:', err.response?.data || err.message);
     }
   };
 
+  const passwordCriteria = checkPasswordCriteria(form.password);
 
- return (
+  return (
     <div className="limiter">
       <div className="container-login100">
         <div className="wrap-login100">
@@ -190,10 +211,10 @@ export default function RegisterPage(){
               <div style={{ marginBottom: '15px', padding: '10px', backgroundColor: '#f8f9fa', borderRadius: '5px', fontSize: '12px' }}>
                 <strong>Critères du mot de passe :</strong>
                 <ul style={{ marginTop: '5px', marginBottom: '0', paddingLeft: '20px' }}>
-                  <li style={{ color: form.password.length >= 12 ? '#4CAF50' : '#666' }}>
+                  <li style={{ color: passwordCriteria.lengthValid ? '#4CAF50' : '#666' }}>
                     Minimum 12 caractères
                   </li>
-                  <li style={{ color: (/[A-Z]/.test(form.password) && /[a-z]/.test(form.password) && (/\d/.test(form.password) || /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form.password))) || (/[A-Z]/.test(form.password) && /\d/.test(form.password) && /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form.password)) || (/[a-z]/.test(form.password) && /\d/.test(form.password) && /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form.password)) ? '#4CAF50' : '#666' }}>
+                  <li style={{ color: passwordCriteria.typesValid ? '#4CAF50' : '#666' }}>
                     Au moins 3 types : majuscules, minuscules, chiffres, spéciaux
                   </li>
                 </ul>
@@ -235,7 +256,6 @@ export default function RegisterPage(){
               </div>
             )}
 
-
             <div className="text-center p-t-12">
               <span className="txt1">
                 {isLoginMode ? 'Pas encore de compte ?' : 'Déjà un compte ?'}
@@ -251,4 +271,4 @@ export default function RegisterPage(){
       <Footer />
     </div>
   );
-};
+}
