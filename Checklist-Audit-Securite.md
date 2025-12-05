@@ -7,13 +7,13 @@
 
 ### 1.1 Gestion des secrets
 
-- [ ] **Aucun secret en clair dans le code** : Les mots de passe, clés API, tokens n'apparaissent pas dans les fichiers source (*.js, *.php, *.py, etc.)
+- [✅] **Aucun secret en clair dans le code** : Les mots de passe, clés API, tokens n'apparaissent pas dans les fichiers source (*.js, *.php, *.py, etc.)
   - Vérification : `git log` et `git diff` ne doivent pas contenir de secrets
   - Les secrets doivent être dans un fichier `.env` (ajouté au `.gitignore`)
 
-- [ ] **Fichier `.gitignore` configuré** : Les fichiers `.env`, `config/`, `secrets/` ne sont pas dans le dépôt Git
+- [✅] **Fichier `.gitignore` configuré** : Les fichiers `.env`, `config/`, `secrets/` ne sont pas dans le dépôt Git
 
-- [ ] **Variables d'environnement utilisées** : Accès aux secrets via `process.env` (Node), `$_ENV` (PHP), ou équivalent
+- [✅] **Variables d'environnement utilisées** : Accès aux secrets via `process.env` (Node), `$_ENV` (PHP), ou équivalent
 
 **Preuves attendues :**
 - Capture d'écran du `.gitignore`
@@ -24,11 +24,11 @@
 
 ### 1.2 Mode Production
 
-- [ ] **Debug désactivé en production** : Les messages d'erreur détaillés (Stack Trace) ne s'affichent PAS aux utilisateurs
+- [✅] **Debug désactivé en production** : Les messages d'erreur détaillés (Stack Trace) ne s'affichent PAS aux utilisateurs
 
-- [ ] **Logs des erreurs configurés** : Les erreurs vont dans des fichiers serveur, pas sur le navigateur
+- [✅] **Logs des erreurs configurés** : Les erreurs vont dans des fichiers serveur, pas sur le navigateur
 
-- [ ] **Console des développeurs nettoyée** : Pas de `console.log()` révélant des infos sensibles
+- [✅] **Console des développeurs nettoyée** : Pas de `console.log()` révélant des infos sensibles
 
 **Preuves attendues :**
 - Fichier `.env.production` ou configuration de production
@@ -50,12 +50,12 @@
 
 ### 1.4 Dépendances saines
 
-- [ ] **Audit des paquets exécuté sans vulnérabilités critiques**
+- [✅] **Audit des paquets exécuté sans vulnérabilités critiques**
   - Node.js : `npm audit` (résultat : 0 vulnérabilités "High" ou "Critical")
   - PHP : `composer audit` (résultat : 0 vulnérabilités critiques)
   - Python : `pip check` ou `safety check`
 
-- [ ] **Les dépendances sont à jour** : Pas de version obsolète connue pour être vulnérable
+- [✅] **Les dépendances sont à jour** : Pas de version obsolète connue pour être vulnérable
 
 **Preuves attendues :**
 - Capture d'écran du résultat `npm audit` / `composer audit`
@@ -69,15 +69,15 @@
 
 ### 2.1 Mots de passe robustes
 
-- [ ] **Validation au signup** : La création de compte impose un minimum de 12 caractères
+- [✅] **Validation au signup** : La création de compte impose un minimum de 12 caractères
 
-- [ ] **Complexité requise** (au moins 3 critères) :
-  - [ ] Majuscules
-  - [ ] Minuscules
-  - [ ] Chiffres
-  - [ ] Caractères spéciaux
+- [✅] **Complexité requise** (au moins 3 critères) :
+  - [✅] Majuscules
+  - [✅] Minuscules
+  - [✅] Chiffres
+  - [✅] Caractères spéciaux
 
-- [ ] **Message d'erreur clair** : L'utilisateur sait pourquoi son mot de passe est rejeté
+- [✅] **Message d'erreur clair** : L'utilisateur sait pourquoi son mot de passe est rejeté
 
 **Preuves attendues :**
 - Capture d'écran du formulaire d'inscription avec message de validation
@@ -87,12 +87,12 @@
 
 ### 2.2 Stockage des mots de passe
 
-- [ ] **Algorithme moderne obligatoire** : `bcrypt`, `Argon2`, ou `PBKDF2`
+- [✅] **Algorithme moderne obligatoire** : `bcrypt`, `Argon2`, ou `PBKDF2`
   - **Interdiction absolue** : MD5, SHA1, SHA256 simple (sans salt), ou texte clair
   
-- [ ] **Salt généré automatiquement** : Chaque mot de passe a son propre salt unique
+- ✅ ] **Salt généré automatiquement** : Chaque mot de passe a son propre salt unique
 
-- [ ] **Coût computationnel approprié** : Bcrypt avec au moins 10 rounds (par défaut)
+- [✅] **Coût computationnel approprié** : Bcrypt avec au moins 10 rounds (par défaut)
 
 **Preuves attendues :**
 - Code source montrant `bcrypt.hash()`, `password_hash()`, ou `Argon2` utilisé
@@ -103,15 +103,15 @@
 
 ### 2.3 Cookies & Sessions
 
-- [ ] **Cookie de session avec HttpOnly** : `Set-Cookie: sessionId=...; HttpOnly; Secure; SameSite=Strict`
+- [✅] **Cookie de session avec HttpOnly** : `Set-Cookie: sessionId=...; HttpOnly; Secure; SameSite=Strict`
 
-- [ ] **Attribut Secure activé** : Le cookie ne se transmet qu'en HTTPS
+- [✅] **Attribut Secure activé** : Le cookie ne se transmet qu'en HTTPS
 
-- [ ] **SameSite configuré** : `SameSite=Strict` ou `Lax` (protège contre CSRF)
+- [✅] **SameSite configuré** : `SameSite=Strict` ou `Lax` (protège contre CSRF)
 
-- [ ] **Expiration de session** : Timeout après 15-30 minutes d'inactivité
+- [✅] **Expiration de session** : Timeout après 15-30 minutes d'inactivité
 
-- [ ] **Logout détruit la session** : Le bouton "Se déconnecter" supprime vraiment la session côté serveur
+- [✅] **Logout détruit la session** : Le bouton "Se déconnecter" supprime vraiment la session côté serveur
 
 **Preuves attendues :**
 - Inspecteur réseau (Onglet Application > Cookies) montrant les flags
@@ -126,12 +126,11 @@
 
 ### 3.1 Rôles distincts
 
-- [ ] **Au minimum 2 rôles implémentés** : Exemple : `USER` et `ADMIN`
+- [✅] **Au minimum 2 rôles implémentés** : Exemple : `USER` et `ADMIN`
   - Ou : `MANAGER`, `EMPLOYEE`, `VIEWER`
   - Ou : `AUTHOR`, `EDITOR`, `READER`
 
-- [ ] **Base de données** : Colonne `role` ou `roles` dans la table `users`
-
+- [✅] **Base de données** : Colonne `role` ou `roles` dans la table `users`
 **Preuves attendues :**
 - Schéma de base de données montrant la table users avec la colonne role
 - Capture d'écran montrant 2 comptes avec rôles différents
@@ -140,11 +139,11 @@
 
 ### 3.2 Vérification d'accès sur chaque route
 
-- [ ] **Pas d'accès direct à une URL admin sans permission**
+- [✅] **Pas d'accès direct à une URL admin sans permission**
   - Tentative : `/admin` sans être Admin → Rejet (403 Forbidden ou redirect)
   - Tentative : `/admin/delete-user/5` en tant qu'User → Rejet
 
-- [ ] **Vérification côté serveur** (pas seulement front-end)
+- [✅] **Vérification côté serveur** (pas seulement front-end)
   - Le serveur valide les permissions avant de répondre
 
 **Preuves attendues :**
@@ -156,12 +155,11 @@
 
 ### 3.3 Pas de modification de données d'un autre utilisateur 
 
-- [ ] **L'utilisateur A ne peut pas voir/modifier les données de l'utilisateur B**
+- [✅] **L'utilisateur A ne peut pas voir/modifier les données de l'utilisateur B**
   - Tentative : `/profil/user/15` → Rejet si vous n'êtes pas l'user 15
   - Tentative : `/mon-compte/editer` → Impossible d'éditer le compte d'un autre
 
-- [ ] **Vérification : `if (userId != loggedInUser) { deny(); }`**
-
+- [✅] **Vérification : `if (userId != loggedInUser) { deny(); }`**
 **Preuves attendues :**
 - Code source montrant la vérification d'identité avant modification
 - Capture écran montrant le rejet quand on change l'ID dans l'URL
@@ -174,9 +172,9 @@
 
 ### 4.1 Injection SQL - Requêtes préparées
 
-- [ ] **Aucune requête SQL concaténée** : Interdiction de faire `"SELECT * FROM users WHERE id=" + userId`
+- [✅] **Aucune requête SQL concaténée** : Interdiction de faire `"SELECT * FROM users WHERE id=" + userId`
 
-- [ ] **Requêtes préparées utilisées systématiquement**
+- [✅] **Requêtes préparées utilisées systématiquement**
   - Node + MySQL : `connection.query("SELECT * FROM users WHERE id = ?", [userId])`
   - PHP + PDO : `$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?"); $stmt->execute([$userId]);`
   - Python + SQLite : `cursor.execute("SELECT * FROM users WHERE id = ?", (userId,))`
@@ -191,11 +189,11 @@
 
 ### 4.2 Anti-XSS - Affichage sécurisé
 
-- [ ] **Toutes les données affichées sont échappées/encodées**
+- [✅] **Toutes les données affichées sont échappées/encodées**
   - Framework auto : Twig `{{ variable }}` (auto-échappe), Blade, JSX
   - Manual : `htmlspecialchars($variable)`, `DOMPurify.sanitize()`, etc.
 
-- [ ] **Test XSS** : Un utilisateur peut poster du texte (commentaire, bio, profil)
+- [✅] **Test XSS** : Un utilisateur peut poster du texte (commentaire, bio, profil)
   - Tentative : Poster `<script>alert('XSS')</script>` dans un commentaire
   - Résultat attendu : Le script ne s'exécute PAS, on voit du texte brut ou échappé
 
@@ -207,12 +205,12 @@
 
 ### 4.3 Validation des entrées
 
-- [ ] **Tous les champs de formulaire validés côté serveur** (pas juste front-end)
+- [✅] **Tous les champs de formulaire validés côté serveur** (pas juste front-end)
   - Email : Format `name@domain.com`
   - Numéro : Uniquement des chiffres
   - Texte : Longueur min/max, caractères autorisés
 
-- [ ] **Rejet des données invalides** : Erreur lisible ou silencieux selon le contexte
+- [✅] **Rejet des données invalides** : Erreur lisible ou silencieux selon le contexte
 
 **Preuves attendues :**
 - Code source montrant la validation (regex, libraires type `joi`, `validator.js`)
