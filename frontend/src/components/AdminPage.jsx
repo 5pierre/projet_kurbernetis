@@ -149,7 +149,9 @@ useEffect(() => {
                                             {user.role}
                                         </td>
                                         <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
-                                            {user.role !== 'admin' ? (
+                                            {user.role === 'admin' ? (
+                                                <span style={{ color: 'gray' }}>Admin</span>
+                                            ) : (
                                                 <button 
                                                     onClick={() => handleDelete(user.id_user, user.name)}
                                                     style={{ 
@@ -163,8 +165,6 @@ useEffect(() => {
                                                 >
                                                     Supprimer
                                                 </button>
-                                            ) : (
-                                                <span style={{ color: 'gray' }}>Admin</span>
                                             )}
                                         </td>
                                     </tr>

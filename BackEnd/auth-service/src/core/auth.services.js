@@ -43,7 +43,7 @@ async function registerUser(req, res) {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
 
     const typesCount = [hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar]
       .filter(Boolean).length;
@@ -132,7 +132,7 @@ async function loginUser(req, res) {
 };
 
 
-createInitialAdmin(); // doit etre appelé une seule fois au démarrage du service
+createInitialAdmin(); 
 
 async function createInitialAdmin() {
   try {

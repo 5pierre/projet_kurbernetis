@@ -95,12 +95,10 @@ export default function RegisterPage(){
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
@@ -108,17 +106,23 @@ export default function RegisterPage(){
     const url = `http://localhost:4000/api/auth/${endpoint}`;
 
     try {
-      const res = await axios.post(url, form, {withCredentials: true});
+      const res = await axios.post(url, form, { withCredentials: true });
       
-      if (res.data && res.data.user) {
+      if (res.data?.user) {
         handleAuthSuccess(res.data.user, navigate);
       }
     } catch (err) {
       const errorMessage = getErrorMessage(isLoginMode, err);
       alert(`Erreur : ${errorMessage}`);
       console.error('Erreur API:', err.response?.data || err.message);
+
+      setIsSubmitting(false);
     }
   };
+
+  const getButtonLabel = () => {
+  return isLoginMode ? 'Connexion' : 'Créer un compte';
+};
 
   const passwordCriteria = checkPasswordCriteria(form.password);
 
@@ -233,10 +237,7 @@ export default function RegisterPage(){
                 disabled={isSubmitting}
                 style={{ opacity: isSubmitting ? 0.6 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
               >
-                {isSubmitting 
-                  ? 'Chargement...' 
-                  : (isLoginMode ? 'Connexion' : 'Créer un compte')
-                }
+                {getButtonLabel()}
               </button>
             </div>
 
