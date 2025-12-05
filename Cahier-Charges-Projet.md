@@ -54,6 +54,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 **Preuves requises pour validation :**
 - Capture écran du formulaire d'inscription
 ![Alt text](/images-md/formulaire-inscri.png "Formulaire d'inscription")
+
 - Tentative inscription avec mot de passe faible → Rejet (avec message)
 ![Alt text](/images-md/image1.png "Formulaire d'inscription")
 - Capture écran du formulaire de connexion
@@ -153,12 +154,12 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Fonctionnalités requises :**
 
-- [ ] **Si vous utilisez une architecture MVC classique (Symfony, Laravel, Django)**
+- [✅] **Si vous utilisez une architecture MVC classique (Symfony, Laravel, Django)**
   - Token CSRF présent dans chaque formulaire
   - `<input type="hidden" name="csrf_token" value="......">`
   - Token validé côté serveur avant traitement POST/PUT/DELETE
 
-- [ ] **Si vous utilisez une API moderna (React + Express, Vue + Django REST)**
+- [✅] **Si vous utilisez une API moderna (React + Express, Vue + Django REST)**
   - JWT ou session + vérification `SameSite=Strict` on cookies
   - CORS configuré correctement (pas `Access-Control-Allow-Origin: *` en production)
 
@@ -196,9 +197,9 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Fonctionnalités requises :**
 
-- [ ] **Header `X-Content-Type-Options: nosniff`** présent dans les réponses HTTP
+- [✅] **Header `X-Content-Type-Options: nosniff`** présent dans les réponses HTTP
 
-- [ ] **Header `X-Frame-Options: DENY`** (ou `SAMEORIGIN`) présent dans les réponses HTTP
+- [✅] **Header `X-Frame-Options: DENY`** (ou `SAMEORIGIN`) présent dans les réponses HTTP
 
 - [ ] **HTTPS obligatoire** (même en dev/local)
   - Certificat auto-signé accepté (Mkcert, OpenSSL, ou Symfony CLI)
@@ -220,7 +221,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 - [✅] **Fichier `.env.example`** dans le repo
   - Montre les variables requises SANS les valeurs
 
-- [👍] **Aucun secret en clair dans le code source**
+- [✅] **Aucun secret en clair dans le code source**
   - Vérifier : `grep -r "password\|api_key\|secret" src/` (doit être vide)
   - Vérifier : `git log` ne contient pas de secrets anciens
 
@@ -263,7 +264,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
 
 **Fonctionnalités requises :**
 
-- [👍] **Audit des dépendances exécuté**
+- [✅] **Audit des dépendances exécuté**
   - `npm audit` (Node) → Zéro vulnérabilités "High" ou "Critical"
   - `composer audit` (PHP) → Zéro vulnérabilités critiques
   - `pip check` (Python) → Zéro vulnérabilités
@@ -272,7 +273,7 @@ Vous allez créer une **application Web complète** de votre choix (e-commerce, 
   - Comment l'app sécurise les données utilisateurs
   - Quels sont les éléments de sécurité implémentés
 
-- [ ] **Code Review basique** (Checklist)
+- [✅] **Code Review basique** (Checklist)
   - Avant la soutenance, vous avez reviewed votre code avec la **Checklist d'Audit Sécurité** fournie
   - Au moins 90% des cases cochées
 
