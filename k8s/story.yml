@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: story-service
+spec:
+  type: ClusterIP
+  selector:
+    app: story
+  ports:
+    - port: 5000
+      targetPort: 5000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+      - name: story
+        image: marinecdt/filrouge-story:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secrets
