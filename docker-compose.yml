@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./databasee/postgreSQL.sql:/docker-entrypoint-initdb.d/init.sql
@@ -18,24 +20,22 @@ services:
 
   # 2. Backend Auth
   auth:
-    # Nom de l'image pour Docker Hub (change 'marinecdt' par ton user hub)
-    image: marinecdt/filrouge-auth:latest 
+    # images: Nom de l'image pour Docker Hub pa sutilisé pour le moment
     build: ./BACKEND/auth-service
-    expose:
-      - "4000" # Uniquement visible par Nginx, pas par ton PC
+    ports:
+      - "4000:4000"
     depends_on:
-      postgres:
+      postgres: # sinon auth démarrer avant la BDD >:(
         condition: service_healthy
     env_file:
       - .env
 
   # 3. Backend Story
   story:
-    # Nom de l'image pour Docker Hub
-    image: marinecdt/filrouge-story:latest
+    # images: Nom de l'image pour Docker Hub pa sutilisé pour le moment
     build: ./BACKEND/story-service
-    expose:
-      - "5000" # Uniquement visible par Nginx
+    ports:
+      - "5000:5000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,15 +44,14 @@ services:
 
   # 4. Frontend React
   frontend:
-    # Nom de l'image pour Docker Hub
-    image: marinecdt/filrouge-front:latest
+    # images: Nom de l'image pour Docker Hub pas sutilisé pour le moment
     build: ./frontend
-    expose:
-      - "3000"
+    ports:
+      - "3000:3000"
     volumes:
       - ./frontend/src:/app/src # Hot Reloading
     environment:
-      - REACT_APP_API_URL=http://localhost
+      - REACT_APP_API_URL=http://localhost #??? 
     env_file:
       - .env
 
