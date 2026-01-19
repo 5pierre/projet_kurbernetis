@@ -12,7 +12,7 @@ export default function AdminPage() {
     const navigate = useNavigate();
     const [showProfile, setShowProfile] = useState(false);
     const [message, setMessage] = useState(null); 
-    const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost'; // L'URL clean
+    const BASE_URL = process.env.REACT_APP_API_URL; // L'URL clean
 
     const fetchUsers = useCallback(async () => {
         try {

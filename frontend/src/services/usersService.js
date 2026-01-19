@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost';
+const BASE_URL = process.env.REACT_APP_API_URL;
 // On pointe vers /api/auth/users sans port 4000
 const API_URL =  `${BASE_URL}/api/auth/users`;
 
@@ -11,7 +11,7 @@ export const getUsers = async () => {
     });
     return response;
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('Error fetching users:', error);
     throw error;
   }
 };
