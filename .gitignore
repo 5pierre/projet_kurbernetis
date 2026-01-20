@@ -8,6 +8,6 @@
 .env.development.local
 .env.test.local
 .env.production.local 
-
+.TODOLIST.md
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
