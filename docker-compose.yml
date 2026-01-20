@@ -2,7 +2,8 @@
 services:
   # 1. Base de données
   postgres:
-    image: postgres:13
+    # image: 5pierre/filrouge-db:latest
+    build: ./databasee
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -11,7 +12,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./databasee/postgreSQL.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 5s
@@ -20,7 +20,7 @@ services:
 
   # 2. Backend Auth
   auth:
-    # images: Nom de l'image pour Docker Hub pa sutilisé pour le moment
+    # images: Nom de l'image pour Docker Hub pas utilisé pour le moment
     build: ./BACKEND/auth-service
     ports:
       - "4000:4000"
