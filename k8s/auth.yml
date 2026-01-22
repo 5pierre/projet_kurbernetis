@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: auth-service # Le nom utilisé par les autres services pour lui parler
 spec:
-  type: ClusterIP # Pas besoin de NodePort car on utilisera Ingress (comme TP3 partie 10)
+  type: ClusterIP # Pas besoin de NodePort car on utilisera Ingress 
   selector:
     app: auth
   ports:

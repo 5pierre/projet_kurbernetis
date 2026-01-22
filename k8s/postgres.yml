@@ -34,14 +34,10 @@ spec:
     spec:
       containers:
       - name: postgres
-        # On utilise VOTRE image qui contient maintenant le script SQL
         image: marinecdt/filrouge-db:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5432
-        
-        # On remet les variables comme dans le docker-compose
-        # Kubernetes va injecter les valeurs définies dans vos Secrets/ConfigMap
         env:
         - name: POSTGRES_USER
           valueFrom:
@@ -59,8 +55,6 @@ spec:
               name: app-config
               key: DB_NAME
 
-        # On garde UNIQUEMENT le volume pour sauvegarder les données (la base elle-même)
-        # On a supprimé le volume "init-script" car il est intégré à l'image
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
