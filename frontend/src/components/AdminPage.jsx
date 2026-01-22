@@ -48,7 +48,7 @@ export default function AdminPage() {
 
         setMessage(null); 
         try {
-            const response = await fetch(`${BASE_URL_AUTH}/api/auth/admin/deleteuser/${userId}`, {
+            const response = await fetch(`${BASE_URL_AUTH}/admin/deleteuser/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
